@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lineup – Queue manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section id="auth" class="auth" hidden>
+  <div class="auth-card">
+    <h1 class="logo">Lineup</h1>
+    <p class="muted" id="authLead">Log in to manage your queues.</p>
+    <form id="authForm" novalidate>
+      <label id="nameRow" hidden>Your name<input id="authName" autocomplete="name" maxlength="60"></label>
+      <label>Email<input id="authEmail" type="email" autocomplete="email" required></label>
+      <label>Password<input id="authPass" type="password" autocomplete="current-password" minlength="6" required></label>
+      <p id="authError" class="error" role="alert"></p>
+      <button class="btn primary wide" id="authSubmit">Log in</button>
+    </form>
+    <p class="muted small"><span id="authSwitchText">New manager?</span> <button class="link" id="authSwitch" type="button">Create an account</button></p>
+    <p class="muted small hint">Demo: <code>demo@lineup.test</code> / <code>demo1234</code> <button class="link" id="fillDemo" type="button">Use demo login</button></p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="logo">Lineup</div>
+    <div class="who"><span id="userName"></span><button id="logout" class="btn ghost">Log out</button></div>
+  </header>
+
+  <main class="layout">
+    <aside class="side">
+      <form id="queueForm" class="newq">
+        <input id="queueName" placeholder="New queue name" maxlength="60" aria-label="New queue name" required>
+        <button class="btn primary">Create queue</button>
+      </form>
+      <ul id="queueList" class="qlist"></ul>
+    </aside>
+
+    <section class="main">
+      <div id="empty" class="empty" hidden>
+        <h2>No queues yet</h2>
+        <p>Create your first queue on the left, for example “Billing desk” or “Walk-in clinic”.</p>
+      </div>
+
+      <div id="queueView" hidden>
+        <div class="qhead">
+          <h1 id="qTitle"></h1>
+          <div class="tabs" role="tablist">
+            <button class="tab on" data-tab="queue" role="tab">Queue</button>
+            <button class="tab" data-tab="dash" role="tab">Dashboard</button>
+          </div>
+          <button id="delQueue" class="btn ghost danger">Delete queue</button>
+        </div>
+
+        <div id="tabQueue" class="grid2">
+          <div class="panel">
+            <form id="tokenForm" class="row">
+              <input id="personName" placeholder="Person's name" maxlength="60" aria-label="Person's name" required>
+              <button class="btn primary">Add to queue</button>
+            </form>
+            <div class="panel-head">
+              <h2>Waiting <span id="waitCount" class="count">0</span></h2>
+              <button id="serveBtn" class="btn accent">Serve next</button>
+            </div>
+            <ol id="waitList" class="tokens"></ol>
+          </div>
+          <div class="panel">
+            <h2>Now serving</h2>
+            <ul id="servingList" class="tokens"></ul>
+            <h2 class="gap">Recently closed</h2>
+            <ul id="recentList" class="tokens compact"></ul>
+          </div>
+        </div>
+
+        <div id="tabDash" hidden>
+          <div class="stats" id="stats"></div>
+          <div class="charts">
+            <div class="panel"><h2>Queue length over time</h2><div class="chart"><canvas id="cTrend"></canvas></div></div>
+            <div class="panel"><h2>Wait time per served token (min)</h2><div class="chart"><canvas id="cWait"></canvas></div></div>
+            <div class="panel"><h2>Arrivals per hour (last 12 h)</h2><div class="chart"><canvas id="cArrivals"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
